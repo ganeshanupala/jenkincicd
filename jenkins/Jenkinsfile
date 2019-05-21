@@ -34,8 +34,9 @@ pipeline {
                 withSonarQubeEnv('Local SonarQube') {
                     sh "/opt/sonar-runner/bin/sonar-runner -X -e"
                 }
-                step([$class: 'JacocoPublisher', execPattern:'**/**.exec',
-                        classPattern: '**/classes/main/com**, 
+                step([$class: 'JacocoPublisher',
+                        execPattern:'**/**.exec',
+                        classPattern: '**/classes/main/com**', 
                         sourcePattern: '**/src/main/java/com**’, 
                         exclusionPattern: '**/*Test*.class']) 
                     
