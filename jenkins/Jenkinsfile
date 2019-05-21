@@ -6,7 +6,7 @@ pipeline {
     
     stages {
         stage('source'){
-            git credentialsId: 'jenkins2-ssh', url: 'https://github.com/KcodeHub/simple-java-maven-app.git       
+            git credentialsId: 'jenkins2-ssh', url: 'https://github.com/KcodeHub/simple-java-maven-app.git'      
         }
         stage('Build') {
             steps {
