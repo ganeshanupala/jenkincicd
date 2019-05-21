@@ -6,7 +6,9 @@ pipeline {
     
     stages {
         stage('source'){
-            git credentialsId: 'jenkins2-ssh', url: 'https://github.com/KcodeHub/simple-java-maven-app.git'      
+            steps {
+            git credentialsId: 'jenkins2-ssh', url: 'https://github.com/KcodeHub/simple-java-maven-app.git'       
+            }
         }
         stage('Build') {
             steps {
@@ -24,6 +26,7 @@ pipeline {
             }
         }
         stage('Analysis') {
+            steps {
             if (IsSonar == true)  {          
                 withSonarQubeEnv('Local SonarQube') {
                     sh "/opt/sonar-runner/bin/sonar-runner -X -e"
@@ -34,8 +37,9 @@ pipeline {
                         error "Pipeline aborted due to quality gate failure: ${qg.status}"
                     }
                 }
-        
+            }
+            }
+        }
         }        
-        
+          
     }
-}
