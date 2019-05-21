@@ -26,8 +26,11 @@ pipeline {
             }
         }
         stage('Analysis') {
+            when {
+             expression(params.IsSonar == true)
+            }
             steps {
-            if (IsSonar == true)  {          
+                     
                 withSonarQubeEnv('Local SonarQube') {
                     sh "/opt/sonar-runner/bin/sonar-runner -X -e"
                 }
@@ -37,7 +40,6 @@ pipeline {
                         error "Pipeline aborted due to quality gate failure: ${qg.status}"
                     }
                 }
-            }
             }
         }
         }        
