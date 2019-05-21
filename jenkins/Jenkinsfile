@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Analysis') {
             when {
-             expression(params.IsSonar == true)
+                expression {params.IsSonar == true}
             }
             steps {
                 script {   
