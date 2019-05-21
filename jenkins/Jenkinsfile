@@ -1,7 +1,13 @@
 pipeline {
     agent any
+    parameters {
+        booleanParam(name: 'IsSonar', defaultValue: false, description: 'Toggle this value')
+    }    
     
     stages {
+        stage('source'){
+            git credentialsId: 'jenkins2-ssh', url: 'https://github.com/KcodeHub/simple-java-maven-app.git       
+        }
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
@@ -17,6 +23,19 @@ pipeline {
                 }
             }
         }
+        stage('Analysis') {
+            if (IsSonar == true)  {          
+                withSonarQubeEnv('Local SonarQube') {
+                    sh "/opt/sonar-runner/bin/sonar-runner -X -e"
+                }
+                timeout(time: 1, unit: 'HOURS') { 
+                    def qg = waitForQualityGate()
+                    if (qg.status != 'OK') {
+                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                    }
+                }
+        
+        }        
         
     }
 }
