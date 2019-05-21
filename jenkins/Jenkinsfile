@@ -34,7 +34,12 @@ pipeline {
                 withSonarQubeEnv('Local SonarQube') {
                     sh "/opt/sonar-runner/bin/sonar-runner -X -e"
                 }
-                timeout(time: 1, unit: 'HOURS') { 
+                step([$class: 'JacocoPublisher', execPattern:'**/**.exec',
+                        classPattern: '**/classes/main/com**, 
+                        sourcePattern: '**/src/main/java/com**’, 
+                        exclusionPattern: '**/*Test*.class']) 
+                    
+                    timeout(time: 1, unit: 'HOURS') { 
                     def qg = waitForQualityGate()
                     if (qg.status != 'OK') {
                         error "Pipeline aborted due to quality gate failure: ${qg.status}"
