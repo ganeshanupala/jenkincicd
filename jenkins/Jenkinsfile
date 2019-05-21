@@ -36,9 +36,9 @@ pipeline {
                 }
                 step([$class: 'JacocoPublisher',
                         execPattern:'**/**.exec',
-                        classPattern: '**/classes/main/com**', 
-                        sourcePattern: '**/src/main/java/com**’, 
-                        exclusionPattern: '**/*Test*.class']) 
+                        classPattern: '**/classes/main/com**',
+                        sourcePattern: '**/src/main/java/com**',
+                        exclusionPattern: '**/*Test*.class'])
                     
                     timeout(time: 1, unit: 'HOURS') { 
                     def qg = waitForQualityGate()
